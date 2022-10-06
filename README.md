@@ -20,21 +20,12 @@ Step 2: install using pip
 $ pip3 install .
 ```
 
-On Windows, due to encoding errors, the script may cause issues when run on the command line. It is
-recommended to use `pip install win-unicode-console --upgrade` prior to launching the script. If you get
-UnicodeEncodingError, you *must* install the above.
+Step 3: with python 3.9 use html.unescape instead of HTMLParser.unescape
 
-In MacOS, you can get the SSL error
-
-```
-[nltk_data] Error loading punkt: <urlopen error [SSL:
-[nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-[nltk_data]     unable to get local issuer certificate (_ssl.c:1045)>
-```
-
-this will be fixed by reinstalling certificates
-```shell
-$ /Applications/Python\ 3.x/Install\ Certificates.command
+```python
+from html import unescape
+from html.parser import HTMLParser
+unescape(extrat_text)
 ```
 
 # Usage
@@ -56,6 +47,7 @@ or
 
 ```bash
 $ sotawhat language model 10
+$ python sotawhat/sotawhat.py model 10
 ```
 
 If you don't specify the number of results, by default, the script returns 5 results. Each result contains the title of the paper with author and published date, a summary of the abstract, and link to the paper.

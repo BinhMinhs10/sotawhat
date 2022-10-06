@@ -8,6 +8,7 @@ import warnings
 import nltk
 from nltk.tokenize import word_tokenize
 from six.moves.html_parser import HTMLParser
+from html import unescape
 from spellchecker import SpellChecker
 
 try:
@@ -50,8 +51,10 @@ def get_next_result(lines, start):
     """
 
     result = {}
-    idx = lines[start + 3][10:].find('"')
-    result['main_page'] = lines[start + 3][9:10 + idx]
+    idx = lines[start + 3][22:].find('"')
+    # print(idx)
+    # print(lines[start + 3])
+    result['main_page'] = lines[start + 3][22:22 + idx]
     idx = lines[start + 4][23:].find('"')
     result['pdf'] = lines[start + 4][22: 23 + idx] + '.pdf'
 
@@ -183,9 +186,9 @@ def extract_line(abstract, keyword, limit):
 
 def get_report(paper, keyword):
     if keyword in paper['abstract'].lower():
-        title = h.unescape(paper['title'])
+        title = unescape(paper['title'])
         headline = '{} ({} - {})\n'.format(title, paper['authors'][0], paper['date'])
-        abstract = h.unescape(paper['abstract'])
+        abstract = unescape(paper['abstract'])
         extract, has_number = extract_line(abstract, keyword, 280 - len(headline))
         if extract:
             report = headline + extract + '\nLink: {}'.format(paper['main_page'])
@@ -244,7 +247,7 @@ def get_papers(keyword, num_results=5):
     per_page = 200
     num_to_show = num_results
     all_unshown = []
-
+    print('Try More Semantic Scholar https://www.semanticscholar.org with Highly Influential Citations')
     while num_to_show > 0:
         query = query_temp.format(keyword_q, str(per_page), str(per_page * page))
 
